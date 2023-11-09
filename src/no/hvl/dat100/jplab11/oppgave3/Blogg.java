@@ -5,8 +5,8 @@ import no.hvl.dat100.jplab11.oppgave1.*;
 
 public class Blogg {
 
-	Innlegg[] innleggTabell;
-	int nesteLedig;
+	protected Innlegg[] innleggTabell;
+	protected int nesteLedig;
 
 	public Blogg() {
 		this.innleggTabell = new Innlegg[20];
@@ -54,7 +54,7 @@ public class Blogg {
 	}
 	
 	public boolean leggTil(Innlegg innlegg) {
-		if (ledigPlass()) {			
+		if (ledigPlass() && finnInnlegg(innlegg) == -1) {			
 			this.innleggTabell[this.nesteLedig] = innlegg;
 			this.nesteLedig ++;
 			return true;
@@ -75,23 +75,52 @@ public class Blogg {
 	// valgfrie oppgaver nedenfor
 	
 	public void utvid() {
-		throw new UnsupportedOperationException(TODO.method());
+		Innlegg[] tmp = this.innleggTabell.clone();
+		this.innleggTabell = new Innlegg[tmp.length * 2];
+		int i = 0;
+		for (Innlegg each: tmp) {
+			this.innleggTabell[i] = each;
+			i++;
+		}
+		tmp = null;
 	}
 	
 	public boolean leggTilUtvid(Innlegg innlegg) {
 
-		throw new UnsupportedOperationException(TODO.method());
+		if(!ledigPlass()) {
+			utvid();
+		}
+		return leggTil(innlegg);
 		
 	}
 	
 	public boolean slett(Innlegg innlegg) {
-		
-		throw new UnsupportedOperationException(TODO.method());
+		boolean flag = false;
+		for(int i = 0; i < this.nesteLedig; i++) {
+			if (innlegg.erLik(this.innleggTabell[i])) {
+				this.innleggTabell[i] = null;
+				flag = true;
+				this.nesteLedig --;
+			}
+			// moves every element one further back in the array so
+			// that the empty space left by slett gets filled and nesteLedig remains accurate
+			if (flag && this.nesteLedig > i+1) {
+				this.innleggTabell[i] = this.innleggTabell[i+1];
+				
+			}
+		}
+		return flag;
 	}
 	
 	public int[] search(String keyword) {
-		
-		throw new UnsupportedOperationException(TODO.method());
-
+		int[] idList = new int[this.nesteLedig];
+		int i = 0;
+		for (Innlegg each: this.innleggTabell) {
+			if (each.getTekst().contains(keyword)) {
+				idList[i] = each.getId();
+				i++;
+			}
+		}
+		return idList;
 	}
 }

@@ -74,8 +74,9 @@ public abstract class Innlegg {
 	
 	// Metoden nedenfor er kun for valgfri oppgave 6
 	public String toHTML() {
-		
-		throw new UnsupportedOperationException(TODO.method());
-				
+		String html = "<h2>" + this.bruker + "@" + this.dato + " [" + Integer.toString(this.likes) + "] " + "</h2>";
+		return html;
 	}
+
+	public abstract String getTekst();
 }

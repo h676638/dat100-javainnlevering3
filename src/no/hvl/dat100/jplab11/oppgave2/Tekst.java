@@ -42,8 +42,8 @@ public class Tekst extends Innlegg {
 	
 	// Metoden nedenfor er kun for valgfri oppgave 6
 	public String toHTML() {
-			
-		throw new UnsupportedOperationException(TODO.method());
+		String html = super.toHTML() + "\n<p>" + this.tekst + "</p>\n";
+		return html;
 				
 	}
 }
